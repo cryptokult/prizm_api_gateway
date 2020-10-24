@@ -1,0 +1,60 @@
+GENERAL DESCRIPTION
+===================
+
+This product translates API PRIZM into a more convenient form to integrate. The API is executed as a separate server that responds via the http protocol and allows two transactions in the wallet which is relevant to the password phrase specified at the start: 
+
+A) Send Prizm from one account to another using the password of the ‘sending wallet ‘ (specified at startup of the Server), amount, payment comments, ReedSolomon-address + public key of the ‘receiving wallet’. 
+
+B) Obtain a list of transactions for the account relevant to the password phrase specified at the start, with the possibility of obtaining a part of the list which follows the transaction specified in the request parameter fromid (used to process only new transactions that have not been processed by your software).
+
+STARTING THE SERVER PrizmAPIServlet
+===================================
+
+java -jar PrizmAPIServlet.jar
+
+Before you start the server you must edit PrizmAPIServlet.properties file and set this parameters:
+
+ - passphrase (is used to specify a passphrase of your account)
+
+ - sendkey (used when you sending funds through this API server. It is used to prevent cybercriminals from sending funds uncontrollably, in case they receive minimal access and are able to send any requests from the server. That is, to send funds, as per request from your software, you will need to specify the same password (the sendkey parameter in the http request to the API server) as when running PrizmAPIServlet.jar) 
+
+ - url (used to specify a URL, for example your own or trusted node, on which you plan to send requests for a list of transactions and request for sending funds)
+
+REQUESTS TO THE API PROCESSOR
+=============================
+
+All requests should be sent to the URL: http://localhost:8888/history or http://localhost:8888/send, and specify the following parameters in the request GET-parameters: 
+
+- For http: //localhost:8888/history: fromid  (optional parameter)-  ID of the last transaction processed by your software. That is, you will get a list of all the transactions that occurred after this transaction. If this parameter is not specified, then you receive a list of all transactions made with the participation of your account. 
+
+- For http://localhost:8888/send: (all parameters are mandatory):
+
+ sendkey - the passphrase specified when the server is started in the -k option. If these password phrases do not match, the funds will not be sent. 
+ 
+ amount - amount of PZM to be sent. 
+
+ comment - payment comments
+
+ destination - Reed-Solomon recipient's address.
+ 
+ publickey - public key of the recipient. 
+
+For example: http://localhost:8888/send?sendkey=12345&amount=10&comment=System check&destination=PRIZM-...&publickey=123...
+
+WORKING WITH MOBILE WALLET
+==========================
+
+To create a QR code for payment, you need to combine the following parameters in a single line separating them by using a colon:
+
+<account ID>:<public key>:<amount>:<comment> 
+
+account ID - The identifier of the recipient's account (can be seen in the client's wallet, if you click on your address) 
+
+public key - the public key of the recipient's account (can be seen in the client's wallet, if you click on your address)
+
+amount - the amount for payment. 
+
+comment - payment comments
+
+Further, using this API server, you can identify  this payment as per two parameters: by the amount of the payment and the payment comments. It is recommended to generate the payment comments in the client software, as well as to maintain its uniqueness within the whole project that connects PRIZM. Also, for more accurate identification, you can use the address (ReedSolomon) of the ‘sending wallet’.
+
