@@ -3,7 +3,7 @@
 Latest version `1.10.4`
 
 #### Content
-[Prizm Gateway](./PrizmAPIServlet.jar) - [Jakarta Servlet](https://en.wikipedia.org/wiki/Jakarta_Servlet)
+[Prizm Gateway](./PrizmAPIServlet.jar) - [Jakarta Servlet](https://en.wikipedia.org/wiki/Jakarta_Servlet) (default port `8888`)
 
 #### Gateway Documentation
 - [readme file](./README)
