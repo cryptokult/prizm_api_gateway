@@ -1,1 +1,3 @@
 /PrizmAPIServlet.properties
+*.db
+/logs/
